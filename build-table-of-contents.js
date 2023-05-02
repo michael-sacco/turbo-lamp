@@ -2,33 +2,36 @@ String.prototype.cleanup = function() {
    return this.replace(/[^a-zA-Z0-9]+/g, "-");
 }
 
-function generateIdBasedOnTitle(titletoconvert) {
+function generateIdBasedOnTitle(titletoconvert)
+{
   return titletoconvert
     .toLowerCase().trim()
     .cleanup()
     .replace(/-+$/g,"");
-} 
+}
 
-function CopyURLToClipboard(e) {
+function CopyURLToClipboard(e)
+{
     navigator.clipboard.writeText(e.href);
 }
 
-function addHashLink(currentDiv, id) {
+function addHashLink(currentDiv, id)
+{
     const newDiv = document.createElement("a");
     newDiv.href = "#" + id;
     newDiv.className = "dynamic-anchor-link"
     newDiv.addEventListener("click", function () { navigator.clipboard.writeText(this.href); });
+
     const newContent = document.createTextNode("#");
     newDiv.appendChild(newContent);
     currentDiv.appendChild(newDiv);
 }
 
 function setupHashLinks() {
-    $('.content-block > div > h3').each(function () {
-        const currentDiv = this;
-        this.style.display = "flex";
-        this.style.flexDirection = "row";
-        addHashLink(currentDiv, this.getAttribute("id"))
+    $('.content-block > div > h3').each(function (index) {
+        $(this).css("display", "flex");
+        $(this).css("flexDirection", "row");
+        addHashLink(this, $(this).attr("id"))
     });
 }
 
@@ -50,31 +53,37 @@ const observer = new IntersectionObserver(entries => {
 }, { rootMargin: '0% 0px -90% 0px', threshold: 0.01 });
 
 
-function BuildTOC()
+function buildTOC()
 {
-    document.getElementById("content").querySelectorAll("#content > div").forEach(function (section, i)
-  {
-  	if(section.classList.contains("w-condition-invisible"))
-        return;
-    
-  	section.querySelectorAll("h2,h3").forEach(function(heading, i)
-    {
-      let str = heading.textContent; // adds section titles to slugs
-      observer.observe(heading);
-      heading.setAttribute("id", generateIdBasedOnTitle(str));
-      const item = document.createElement("a"); // creates an anchor element called "item"
-      item.innerHTML = heading.textContent; // gives each item the text of the corresponding heading
-      
-      item.classList.add("tocitem");
-      if(heading.nodeName == "H3")
-      {
-      	 item.classList.add("subheader");
-      }
-      item.setAttribute("href", "#" + heading.getAttribute("id")); // gives each item the correct anchor link
-      document.querySelector("#toc").appendChild(item); // places each item inside the Table of Contents div
+    const tableContainer = $("#toc");
+
+    $("#content > div").not(".w-condition-invisible").$("h2,h3").each(function (index) {
+
+        observer.observe(this); // Add to observer
+
+        // Setup ID
+        let str = $(this).text();
+        let id = generateIdBasedOnTitle(str);
+        $(this).attr("id", id);
+
+        // Setup new Element
+        const tocItem = $(document.createElement("a")); // creates an anchor element called "item"
+        tocItem.html(str); // gives each item the text of the corresponding heading
+        tocItem.addClass("tocitem");
+
+
+        // Set an additional subhead class for H3
+        if ($(this).prop("nodeName") == "H3") {
+            tocItem.addClass("subheader"); 
+        }
+
+        // Assigns ID to href
+        tocItem.attr("href", "#" + id); // gives each item the correct anchor link
+
+        // Appends to table.
+        tableContainer.append(tocItem); // places each item inside the Table of Contents div
     });
-  });
 }
 
-$(document).ready(BuildTOC);
+$(document).ready(buildTOC);
 $(document).ready(setupHashLinks);
