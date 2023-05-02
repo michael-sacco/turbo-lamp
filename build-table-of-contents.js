@@ -7,14 +7,13 @@ function generateIdBasedOnTitle(titletoconvert) {
     .toLowerCase().trim()
     .cleanup()
     .replace(/-+$/g,"");
-}
-
+} 
 
 function CopyURLToClipboard(e) {
     navigator.clipboard.writeText(e.href);
 }
 
-function addElement(currentDiv, id) {
+function addHashLink(currentDiv, id) {
     const newDiv = document.createElement("a");
     newDiv.href = "#" + id;
     newDiv.className = "dynamic-anchor-link"
@@ -23,6 +22,16 @@ function addElement(currentDiv, id) {
     newDiv.appendChild(newContent);
     currentDiv.appendChild(newDiv);
 }
+
+function setupHashLinks() {
+    $('.content-block > div > h3').each(function () {
+        const currentDiv = this;
+        this.style.display = "flex";
+        this.style.flexDirection = "row";
+        addHashLink(currentDiv, this.getAttribute("id"))
+    });
+}
+
 
 const observer = new IntersectionObserver(entries => {
     entries.every(entry => {
@@ -41,7 +50,7 @@ const observer = new IntersectionObserver(entries => {
 }, { rootMargin: '0% 0px -90% 0px', threshold: 0.01 });
 
 
-async function BuildTOC()
+function BuildTOC()
 {
     document.getElementById("content").querySelectorAll("#content > div").forEach(function (section, i)
   {
@@ -67,12 +76,5 @@ async function BuildTOC()
   });
 }
 
-BuildTOC();
-
-
-$('.content-block > div > h3').each(function () {
-    const currentDiv = this;
-    this.style.display = "flex";
-    this.style.flexDirection = "row";
-    addElement(currentDiv, this.getAttribute("id"))
-});
+$(document).ready(BuildTOC);
+$(document).ready(setupHashLinks);

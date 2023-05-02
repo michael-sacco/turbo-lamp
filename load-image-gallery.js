@@ -22,5 +22,4 @@ function setImgSrc() {
 $(function () {
     db = prepareCollectionListDataSource("#product-img-source");
     setImgSrc();
-    setInterval(setImgSrc, 250);
 });
