@@ -24,9 +24,17 @@ function addHashLink(currentDiv, id)
     newDiv.click(function () { navigator.clipboard.writeText(this.href); });
     newDiv.append("#");
     $(currentDiv).append(newDiv);
-    //const newContent = document.createTextNode("#");
-    //newDiv.appendChild(newContent);
-    //currentDiv.appendChild(newDiv);
+}
+
+
+function addHashLinkDirect($currentDiv, url) {
+    const newDiv = $(document.createElement("a"));
+    newDiv.attr("href", url);
+    newDiv.addClass("dynamic-anchor-link");
+
+    newDiv.click(function () { navigator.clipboard.writeText(this.href); });
+    newDiv.append("#");
+    $currentDiv.append(newDiv);
 }
 
 function setupHashLinks() {
@@ -61,7 +69,7 @@ function buildTOC()
 
     $("#content > div").each(function (index) {
 
-        if ($(this).hasClass(".w-condition-invisible"))
+        if ($(this).hasClass("w-condition-invisible"))
             return;
 
         $("h2, h3").each(function (index) {
@@ -74,9 +82,9 @@ function buildTOC()
             let id = generateIdBasedOnTitle(str);
             $(this).attr("id", id);
 
-            // Setup new Element
-            const tocItem = $(document.createElement("a")); // creates an anchor element called "item"
-            tocItem.html(str); // gives each item the text of the corresponding heading
+            // Setup new element
+            const tocItem = $(document.createElement("a"));
+            tocItem.html(str);
             tocItem.addClass("tocitem");
 
 
@@ -85,14 +93,21 @@ function buildTOC()
                 tocItem.addClass("subheader");
             }
 
+            let hashTarget = "#" + id;
+
             // Assigns ID to href
-            tocItem.attr("href", "#" + id); // gives each item the correct anchor link
+            tocItem.attr("href", hashTarget);
 
             // Appends to table.
-            tableContainer.append(tocItem); // places each item inside the Table of Contents div
+            tableContainer.append(tocItem);
+
+
+            $(this).css("display", "flex");
+            $(this).css("display", "row");
+            addHashLinkDirect($(this), hashTarget)
         });
     });
 }
 
 $(document).ready(buildTOC);
-$(document).ready(setupHashLinks);
+//$(document).ready(setupHashLinks);
