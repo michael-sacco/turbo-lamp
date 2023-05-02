@@ -17,14 +17,16 @@ function CopyURLToClipboard(e)
 
 function addHashLink(currentDiv, id)
 {
-    const newDiv = document.createElement("a");
-    newDiv.href = "#" + id;
-    newDiv.className = "dynamic-anchor-link"
-    newDiv.addEventListener("click", function () { navigator.clipboard.writeText(this.href); });
+    const newDiv = $(document.createElement("a"));
+    newDiv.attr("href", "#" + id);
+    newDiv.addClass("dynamic-anchor-link");
 
-    const newContent = document.createTextNode("#");
-    newDiv.appendChild(newContent);
-    currentDiv.appendChild(newDiv);
+    newDiv.click(function () { navigator.clipboard.writeText(this.href); });
+    newDiv.append("#");
+    $(currentDiv).append(newDiv);
+    //const newContent = document.createTextNode("#");
+    //newDiv.appendChild(newContent);
+    //currentDiv.appendChild(newDiv);
 }
 
 function setupHashLinks() {
@@ -57,7 +59,11 @@ function buildTOC()
 {
     const tableContainer = $("#toc");
 
-    $("#content > div").not(".w-condition-invisible").each(function (index) {
+    $("#content > div").each(function (index) {
+
+        if ($(this).hasClass(".w-condition-invisible"))
+            return;
+
         $("h2, h3").each(function (index) {
 
             // Add to observer
