@@ -57,31 +57,34 @@ function buildTOC()
 {
     const tableContainer = $("#toc");
 
-    $("#content > div").not(".w-condition-invisible").$("h2,h3").each(function (index) {
+    $("#content > div").not(".w-condition-invisible").each(function (index) {
+        $("h2, h3").each(function (index) {
 
-        observer.observe(this); // Add to observer
+            // Add to observer
+            observer.observe(this); 
 
-        // Setup ID
-        let str = $(this).text();
-        let id = generateIdBasedOnTitle(str);
-        $(this).attr("id", id);
+            // Setup ID
+            let str = $(this).text();
+            let id = generateIdBasedOnTitle(str);
+            $(this).attr("id", id);
 
-        // Setup new Element
-        const tocItem = $(document.createElement("a")); // creates an anchor element called "item"
-        tocItem.html(str); // gives each item the text of the corresponding heading
-        tocItem.addClass("tocitem");
+            // Setup new Element
+            const tocItem = $(document.createElement("a")); // creates an anchor element called "item"
+            tocItem.html(str); // gives each item the text of the corresponding heading
+            tocItem.addClass("tocitem");
 
 
-        // Set an additional subhead class for H3
-        if ($(this).prop("nodeName") == "H3") {
-            tocItem.addClass("subheader"); 
-        }
+            // Set an additional subhead class for H3
+            if ($(this).prop("nodeName") == "H3") {
+                tocItem.addClass("subheader");
+            }
 
-        // Assigns ID to href
-        tocItem.attr("href", "#" + id); // gives each item the correct anchor link
+            // Assigns ID to href
+            tocItem.attr("href", "#" + id); // gives each item the correct anchor link
 
-        // Appends to table.
-        tableContainer.append(tocItem); // places each item inside the Table of Contents div
+            // Appends to table.
+            tableContainer.append(tocItem); // places each item inside the Table of Contents div
+        });
     });
 }
 
