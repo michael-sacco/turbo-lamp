@@ -63,14 +63,19 @@ const observer = new IntersectionObserver(entries => {
 }, { rootMargin: '0% 0px -90% 0px', threshold: 0.01 });
 
 
+
 function buildTOC()
 {
     const tableContainer = $("#toc");
 
-    $("#content > div").each(function (index) {
+    $("#content > div").not(".w-condition-invisible").each(function (index) {
 
-        if ($(this).hasClass("w-condition-invisible"))
+        /*
+        if ($(this).hasClass("w-condition-invisible")) {
+            console.log($(this).attr("name"));
             return;
+        }
+          */  
 
         $("h2, h3").each(function (index) {
 
