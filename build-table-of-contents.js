@@ -68,49 +68,39 @@ function buildTOC()
 {
     const tableContainer = $("#toc");
 
-    $("#content > div").not(".w-condition-invisible").each(function (index) {
+    $("#content > div").not($(".w-condition-invisible")).find("h2, h3").each(function (index) {
 
-        /*
-        if ($(this).hasClass("w-condition-invisible")) {
-            console.log($(this).attr("name"));
-            return;
+        // Add to observer
+        observer.observe(this);
+
+        // Setup ID
+        let str = $(this).text();
+        let id = generateIdBasedOnTitle(str);
+        $(this).attr("id", id);
+
+        // Setup new element
+        const tocItem = $(document.createElement("a"));
+        tocItem.html(str);
+        tocItem.addClass("tocitem");
+
+
+        // Set an additional subhead class for H3
+        if ($(this).prop("nodeName") == "H3") {
+            tocItem.addClass("subheader");
         }
-          */  
 
-        $("h2, h3").each(function (index) {
+        let hashTarget = "#" + id;
 
-            // Add to observer
-            observer.observe(this); 
+        // Assigns ID to href
+        tocItem.attr("href", hashTarget);
 
-            // Setup ID
-            let str = $(this).text();
-            let id = generateIdBasedOnTitle(str);
-            $(this).attr("id", id);
-
-            // Setup new element
-            const tocItem = $(document.createElement("a"));
-            tocItem.html(str);
-            tocItem.addClass("tocitem");
+        // Appends to table.
+        tableContainer.append(tocItem);
 
 
-            // Set an additional subhead class for H3
-            if ($(this).prop("nodeName") == "H3") {
-                tocItem.addClass("subheader");
-            }
-
-            let hashTarget = "#" + id;
-
-            // Assigns ID to href
-            tocItem.attr("href", hashTarget);
-
-            // Appends to table.
-            tableContainer.append(tocItem);
-
-
-            $(this).css("display", "flex");
-            $(this).css("display", "row");
-            addHashLinkDirect($(this), hashTarget)
-        });
+        $(this).css("display", "flex");
+        $(this).css("display", "row");
+        addHashLinkDirect($(this), hashTarget)
     });
 }
 
