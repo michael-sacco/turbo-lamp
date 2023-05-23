@@ -1,22 +1,19 @@
-String.prototype.cleanup = function() {
-   return this.replace(/[^a-zA-Z0-9]+/g, "-");
+String.prototype.cleanup = function () {
+    return this.replace(/[^a-zA-Z0-9]+/g, "-");
 }
 
-function generateIdBasedOnTitle(titletoconvert)
-{
-  return titletoconvert
-    .toLowerCase().trim()
-    .cleanup()
-    .replace(/-+$/g,"");
+function generateIdBasedOnTitle(titletoconvert) {
+    return titletoconvert
+        .toLowerCase().trim()
+        .cleanup()
+        .replace(/-+$/g, "");
 }
 
-function CopyURLToClipboard(e)
-{
+function CopyURLToClipboard(e) {
     navigator.clipboard.writeText(e.href);
 }
 
-function addHashLink(currentDiv, id)
-{
+function addHashLink(currentDiv, id) {
     const newDiv = $(document.createElement("a"));
     newDiv.attr("href", "#" + id);
     newDiv.addClass("dynamic-anchor-link");
@@ -64,8 +61,7 @@ const observer = new IntersectionObserver(entries => {
 
 
 
-function buildTOC()
-{
+function buildTOC() {
     const tableContainer = $("#toc");
 
     $("#content > div").not($(".w-condition-invisible")).find("h2, h3").each(function (index) {
@@ -100,15 +96,15 @@ function buildTOC()
 
         $(this).css("display", "flex");
         $(this).css("display", "row");
-        addHashLinkDirect($(this), hashTarget)
+        addHashLinkDirect($(this), hashTarget);
     });
 
+
     if (location.hash) {
-        var requested_hash = location.hash.slice(1);
+        let requested_hash = location.hash.slice(1);
         location.hash = '';
         location.hash = requested_hash;
     }
 }
 
 $(document).ready(buildTOC);
-//$(document).ready(setupHashLinks);
