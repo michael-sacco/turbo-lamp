@@ -1,10 +1,10 @@
 
-const _BASEURL = "https://prf.hn/click/";
-const _WEBSITE_FULL = "[p_id:1100l485149]";
-const _CAMREF_FULL = "camref:1011lwgoj";
+const _BASEURL = "https://prf.hn/click";
+const _WEBSITE_FULL = "/[p_id:1100l485149]";
+const _CAMREF_FULL = "/camref:1011lwgoj";
 
-const _PUBREF_KEY = "pubref:";
-const _DEST_KEY = "destination:";
+const _PUBREF_KEY = "/pubref:";
+const _DEST_KEY = "/destination:";
 
 
 function getEncodedUrl(originalUrl) {
