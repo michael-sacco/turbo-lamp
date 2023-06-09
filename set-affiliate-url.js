@@ -24,7 +24,7 @@ function getEncodedUrl(originalUrl) {
 }
 
 function buildUrl($obj, pubref) {
-    const destination = convertUrl($obj.attr("href"));
+    const destination = getEncodedUrl($obj.attr("href"));
     let urlConstructor = _BASEURL + _CAMREF_FULL + _PUBREF_KEY + pubref + _WEBSITE_FULL + _DEST_KEY + destination;
     $obj.attr("href", urlConstructor);
 }
