@@ -543,7 +543,6 @@ function pickRandom(items) {
     return items[Math.floor(Math.random() * items.length)];
 }
 
-
 function generateIdea() {
     $("#genre").find(".game_idea_generator-text").text(pickRandom(gameGenres));
     $("#setting").find(".game_idea_generator-text").text(pickRandom(gameSettings));

@@ -1,6 +1,16 @@
-function convertUrl(originalUrl) {
+
+const _BASEURL = "https://prf.hn/click/";
+const _WEBSITE_FULL = "[p_id:1100l485149]";
+const _CAMREF_FULL = "camref:1011lwgoj";
+
+const _PUBREF_KEY = "pubref:";
+const _DEST_KEY = "destination:";
+
+
+function getEncodedUrl(originalUrl) {
     // Encode the original URL
     const encodedUrl = encodeURIComponent(originalUrl);
+
     // Replace special characters with their encoded counterparts
     const convertedUrl = encodedUrl.replace(/!/g, '%21')
         .replace(/\*/g, '%2A')
@@ -10,17 +20,11 @@ function convertUrl(originalUrl) {
         .replace(/~/g, '%7E')
         .replace(/%20/g, '+');
 
-    const targetUrlBase = "https://prf.hn/click/camref:1011lwgoj/pubref:website-product-page/[p_id:1100l485149]/destination:"
-
-    // Return the converted URL
-    return targetUrlBase + convertedUrl;
+    return convertedUrl;
 }
 
-function ReplaceUrl($obj) {
-    const originalUrl = $obj.attr("href");
-    const convertedUrl = convertUrl(originalUrl);
-    $obj.attr("href", convertedUrl);
+function buildUrl($obj, pubref) {
+    const destination = convertUrl($obj.attr("href"));
+    let urlConstructor = _BASEURL + _CAMREF_FULL + _PUBREF_KEY + pubref + _WEBSITE_FULL + _DEST_KEY + destination;
+    $obj.attr("href", urlConstructor);
 }
-
-const BUTTON_ID = "#purchase-link";
-ReplaceUrl($(BUTTON_ID));
